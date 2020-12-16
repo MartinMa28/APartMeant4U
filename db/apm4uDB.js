@@ -43,6 +43,8 @@ function MyDB() {
     };
 
     myDB.getUsers = async () => {
+      // This is the correct way.
+      
       //collection
       const users = db.collection("users");
 
@@ -54,6 +56,7 @@ function MyDB() {
     };
 
     myDB.getListings = async () => {
+      // Also correct here
       const listings = db.collection("aptlistings"); // access apt listings collection
       const query = {};
       const res = listings.find(query).skip(0).limit(50).toArray();
@@ -61,6 +64,8 @@ function MyDB() {
     };
 
     myDB.createFavorites = async (user) => {
+      // 'db' should be used directly here. It's declared (line 10). There is no reason to connect again in the callback of connect.
+      // Just like what you did in getListings and getUsers. 
       const client = new MongoClient(url, { useUnifiedTopology: true });
       await client.connect();
       const db = client.db(dbName);
